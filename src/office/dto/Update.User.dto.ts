@@ -1,8 +1,12 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsInt, IsNotEmpty, IsNumber, IsPositive, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class UpdateOfficeDto {
 
+    @IsNumber()
+    @IsPositive()
     @IsNotEmpty()
+    @Type(() => Number)
     officeCode: number | any
 
     @IsString()
