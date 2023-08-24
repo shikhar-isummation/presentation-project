@@ -19,12 +19,16 @@ import { UserAgentMiddleware, UserAgentOptions } from "./middlewares/user-agent.
         }
     ]
 })
-export class OfficeModule implements NestModule, OnModuleInit {
+export class OfficeModule implements NestModule, OnModuleInit { 
     configure(consumer: MiddlewareConsumer) {
         consumer
             .apply(UserAgentMiddleware)
             // .exclude({ path: "offices", method: RequestMethod.POST })
-            .forRoutes("offices");
+            .forRoutes(
+                // 'offices',
+                // { path: "offices/:id", method: RequestMethod.GET }, 
+                OfficeController
+            );
     }
 
     onModuleInit() {
