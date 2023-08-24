@@ -17,13 +17,13 @@ import {
     use(req: Request, res: Response, next: NextFunction) {
       const ua = req.headers["user-agent"];
   
-      console.log(`[UserAgentMiddleware] User Agent before: ${ua}`);
+      // console.log(`[UserAgentMiddleware] User Agent before: ${ua}`);
 
       if (!this.isUserAgentAcceptable(ua)) {
         throw new ForbiddenException("Not allowed");
       }
   
-      console.log(`[UserAgentMiddleware] User Agent after: ${ua}`);
+      // console.log(`[UserAgentMiddleware] User Agent after: ${ua}`);
   
       req["ua"] = ua;
       next();

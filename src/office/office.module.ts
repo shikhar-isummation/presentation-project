@@ -7,12 +7,14 @@ import { Employees } from "src/typeorm/employees.entity";
 import { UsersModule } from "src/users/users.module";
 import { AuthModule } from "src/auth/auth.module";
 import { UserAgentMiddleware, UserAgentOptions } from "./middlewares/user-agent.middleware";
+import { RecentSearchService } from "./services/recent-search.service";
 
 
 @Module({
     imports: [TypeOrmModule.forFeature([Office, Employees]), AuthModule, UsersModule],
     controllers: [OfficeController],
     providers: [
+        RecentSearchService,
         OfficeService, {
             provide: UserAgentOptions,
             useValue: { accepted: ["chrome", "firefox", "postman"] },

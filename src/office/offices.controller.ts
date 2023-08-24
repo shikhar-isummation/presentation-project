@@ -1,4 +1,4 @@
-import { Controller, Get, Delete, Param, HttpStatus, HttpException, Post, Body, Patch, ParseIntPipe, UseGuards, HttpCode, Res, Header, Redirect, Headers, Query, Ip, DefaultValuePipe, ParseArrayPipe, UseFilters, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Delete, Param, HttpStatus, HttpException, Post, Body, Patch, ParseIntPipe, UseGuards, HttpCode, Res, Header, Redirect, Headers, Query, Ip, DefaultValuePipe, ParseArrayPipe, UseFilters, BadRequestException, UseInterceptors } from '@nestjs/common';
 import { OfficeService } from './office.service';
 import { Office } from '../typeorm/office.entity';
 import { CreateOfficeDto } from './dto/Create.User.dto';
@@ -11,16 +11,26 @@ import { ParseDatePipe } from 'src/pipes/parse-date.pipe';
 import { IdExceptionFilter } from 'src/exceptions/id-exception.filter';
 import { IdException } from 'src/exceptions/id-exception';
 import { HttpExceptionFilter } from 'src/exceptions/http-exception.filter';
+import { RecentSearchInterceptor } from './interceptors/recent-search.interceptor';
+import { RecentSearchService } from './services/recent-search.service';
 
 @UseFilters(HttpExceptionFilter)
 @Controller()
 export class OfficeController {
-  constructor(private readonly officeService: OfficeService) { }
+  constructor(
+    private readonly officeService: OfficeService,
+    private readonly recentSearchService: RecentSearchService
+  ) { }
 
   @UseGuards(JwtAuthGuard, new RoleGuard([CONSTANTS.ROLES.CEO]))
   @Get()
   async findAll(): Promise<Office[]> {
     return this.officeService.getAllOffices();
+  }
+
+  @Get("recent-search")
+  public getRecentSearch(@Query("token") token: string) {
+    return this.recentSearchService.find(token);
   }
 
   @UseGuards(JwtAuthGuard, new RoleGuard([CONSTANTS.ROLES.CEO]))
@@ -38,6 +48,7 @@ export class OfficeController {
   // @HttpCode(HttpStatus.OK)
   // @UseFilters(IdExceptionFilter)
   @Get(':officeCode')
+  @UseInterceptors(RecentSearchInterceptor)
   async searchUserById(
     @Param(
       'officeCode',

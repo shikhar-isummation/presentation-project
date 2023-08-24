@@ -3,7 +3,7 @@
 import { BeforeApplicationShutdown, Module, OnApplicationBootstrap, OnApplicationShutdown, OnModuleDestroy, OnModuleInit, ValidationPipe } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Office } from './typeorm/office.entity';
-import { APP_FILTER, APP_PIPE, RouterModule } from '@nestjs/core';
+import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE, RouterModule } from '@nestjs/core';
 import { OfficeModule } from './office/office.module';
 import { Employees } from './typeorm/employees.entity';
 import { UsersModule } from './users/users.module';
@@ -12,6 +12,7 @@ import { AppController } from './app.controller';
 import { EnvConfig } from './config';
 import { CacheStoreModule, StoreType } from './cache-store';
 import { AppExceptionFilter } from './exceptions/app-exception.filter';
+import { LoggerInterceptor } from './interceptors/logger.interceptor';
 
 
 function createConnection(options = {}) {
@@ -55,8 +56,9 @@ const OFFICE_ROUTES = [
     AuthModule,
     UsersModule
   ],
-  controllers: [AppController],
+  controllers: [AppController], 
   providers: [
+    { provide: APP_INTERCEPTOR, useClass: LoggerInterceptor },
     { provide: APP_FILTER, useClass: AppExceptionFilter },
     { provide: APP_PIPE, useClass: ValidationPipe },
     // `string` value provider
