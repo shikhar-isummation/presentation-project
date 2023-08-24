@@ -1,6 +1,3 @@
-/* eslint-disable prettier/prettier */
-// src/office.service.ts
-
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -71,7 +68,6 @@ export class OfficeService {
       message: `Office Successfully Created & office code is ${officeCode}`,
     }
   }
-
 
   async updateUser(officeCode: number, updateOffice: UpdateOfficeDto) {
     if (!officeCode) {

@@ -1,14 +1,39 @@
-import { Controller, Request, Post, UseGuards, Get } from '@nestjs/common';
+import { Controller, Request, Post, UseGuards, Get, Inject } from '@nestjs/common';
 import { AuthService } from './auth/auth.service';
 import { AuthGuard } from '@nestjs/passport';
+import { EnvConfig } from './config';
 
 @Controller()
 export class AppController {
-  constructor(private authService: AuthService) { }
+  constructor(@Inject("DATABASE_NAME") private dbname: string,
+
+    @Inject("API_VERSION") private apiV: number,
+
+    @Inject("MAIL") private emails: string[],
+
+    @Inject("CRON_CONFIG") private cron: Record<string, any>,
+
+    private config: EnvConfig,
+    // no need to use @Inject, because injection token is a class `EnvConfig`,
+    private authService: AuthService,
+  ) { }
 
   @UseGuards(AuthGuard('local'))
   @Post('login')
   async login(@Request() req) {
+    //user
+    console.log('req.user', req.user);
+    console.log("Inside [UsersController]:");
+    //Db name Val
+    console.log("String value (Database name): ", this.dbname);
+    //num val
+    console.log("Number value (Api version): ", this.apiV);
+    //Email arr
+    console.log("Array value (Mails): ", this.emails);
+    //cron
+    console.log("Object value (Cron config): ", this.cron);
+    //config
+    console.log("Object value with Class Injection token (EnvConfig): ", this.config);
     return this.authService.login(req.user);
   }
 

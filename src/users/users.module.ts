@@ -3,7 +3,7 @@ import { Module } from '@nestjs/common';
 import { UsersService } from './users.service';
 
 @Module({
-  providers: [UsersService],
+  providers: [UsersService, { provide: 'UserSer', useClass: UsersService }],
   exports: [UsersService],
 })
-export class UsersModule {}
+export class UsersModule { }
