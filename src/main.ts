@@ -10,9 +10,10 @@ async function bootstrap() {
     console.log(`Running on Express adapter at port: ${PORT}`);
     await app.listen(PORT);
     app.useGlobalPipes(new ValidationPipe());
+
+    // setTimeout(()=>app.close(),5000)
   } catch (error) {
     console.log(error);
   }
 }
 bootstrap();
-  

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, OnModuleInit } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalStrategy } from './local.strategy';
 import { JwtStrategy } from './jwt.strategy';
@@ -19,4 +19,8 @@ import { jwtConstants } from './constants';
   providers: [AuthService, { provide: "authSer", useExisting: AuthService }, LocalStrategy, JwtStrategy],
   exports: [AuthService],
 })
-export class AuthModule { }
+export class AuthModule implements OnModuleInit {
+  onModuleInit() {
+    console.log("AuthModule module init");
+  }
+}

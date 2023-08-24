@@ -36,7 +36,7 @@ export class OfficeController {
   // @Header('Cache-Control', 'none')
   // @Redirect('/offices', 302)
   // @HttpCode(HttpStatus.OK)
-  @UseFilters(IdExceptionFilter)
+  // @UseFilters(IdExceptionFilter)
   @Get(':officeCode')
   async searchUserById(
     @Param(
@@ -59,7 +59,6 @@ export class OfficeController {
       throw new IdException("Invalid id");
     if (officeCode > 10)
       throw new BadRequestException("Invalid id");
-
     // if (officeCode <= 0)
     //   throw new Error()
     // if (officeCode <= 0)

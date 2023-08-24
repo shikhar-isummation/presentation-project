@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import { writeFile } from "fs/promises";
 import { join } from "path";
 
-@Catch(HttpException) //Cache HttpException
+@Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
   catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
@@ -25,7 +25,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
   }
 
   private async writeHttpLog(data: Record<string, any>) {
-    const LOGS_DIR = join(__dirname, `${Date.now()}-log.json`); // dist/exceptions
+    const LOGS_DIR = join(__dirname, `${Date.now()}-shikhar-log.json`); // dist/exceptions
 
     try {
       await writeFile(LOGS_DIR, JSON.stringify(data));
