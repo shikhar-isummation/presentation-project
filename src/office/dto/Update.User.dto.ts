@@ -1,4 +1,4 @@
-import { IsInt, IsNotEmpty, IsNumber, IsPositive, IsString } from 'class-validator';
+import { IsInt, IsNotEmpty, IsNumber, IsPositive, IsString, Matches } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class UpdateOfficeDto {
@@ -25,10 +25,12 @@ export class UpdateOfficeDto {
     country: string
 
 
-    @IsString()
+    @IsNotEmpty()
+    @Matches(/^\+\d{1,3} \d{3} \d{3} \d{4}$/, { message: 'Invalid phone number format', })
     phone: string
 
-    @IsString()
+    @IsNumber()
+    @Type(() => Number)
     postalCode: string
 
     @IsString()

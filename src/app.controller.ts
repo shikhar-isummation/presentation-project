@@ -2,12 +2,15 @@ import { Controller, Request, Post, UseGuards, Get, Inject } from '@nestjs/commo
 import { AuthService } from './auth/auth.service';
 import { AuthGuard } from '@nestjs/passport';
 import { EnvConfig } from './config';
+import { CacheStoreService } from './cache-store';
 
 @Controller()
 export class AppController {
   constructor(@Inject("DATABASE_NAME") private dbname: string,
 
     @Inject("API_VERSION") private apiV: number,
+
+    @Inject("DATABASE_CONNECTION") private dbConn: Record<string, any>,
 
     @Inject("MAIL") private emails: string[],
 
@@ -16,7 +19,11 @@ export class AppController {
     private config: EnvConfig,
     // no need to use @Inject, because injection token is a class `EnvConfig`,
     private authService: AuthService,
-  ) { }
+
+    private store: CacheStoreService
+  ) {
+    // console.log(`[AppService]:`, this.store);
+  }
 
   @UseGuards(AuthGuard('local'))
   @Post('login')
@@ -34,6 +41,9 @@ export class AppController {
     console.log("Object value (Cron config): ", this.cron);
     //config
     console.log("Object value with Class Injection token (EnvConfig): ", this.config);
+    //db Connect
+    console.log("Database connection", this.dbConn);
+
     return this.authService.login(req.user);
   }
 

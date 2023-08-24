@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Scope } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Office } from '../typeorm/office.entity';
@@ -7,7 +7,11 @@ import { CreateOfficeDto } from './dto/Create.User.dto';
 import { UpdateOfficeDto } from './dto/Update.User.dto';
 import { Employees } from 'src/typeorm/employees.entity';
 
-@Injectable()
+@Injectable(
+  // {scope:Scope.DEFAULT}
+  // {scope:Scope.REQUEST}
+  // {scope:Scope.TRANSIENT}
+)
 export class OfficeService {
   constructor(
     @InjectRepository(Office)
